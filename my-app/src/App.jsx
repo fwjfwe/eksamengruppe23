@@ -1,25 +1,24 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import Home from './Home'
-import EventPage from './EventPage'
-import CategoryPage from './CatagoryPage'
-import Dashboard from './Dashboard'
-import SanityEventDetails from './SanityEventDetails'
-import PageTitle from './components/PageTitle'
+import { Routes, Route } from 'react-router-dom'
+import Header from './components/Header'
+import Home from './components/Home'
+import EventPage from './components/EventPage'
+import CategoryPage from './components/CategoryPage'
+import Dashboard from './components/Dashboard'
+import SanityEventDetails from './components/SanityEventDetails'
 
 function App() {
   return (
-    <Router>
-      <Navbar />
+    <>
+      <Header />
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/event/:id" element={<EventPage />} /> 
-        <Route path="/category/:categorySlug" element={<CategoryPage />} /> 
+        <Route path="/" element={<Home />} /> 
+        <Route path="/event/:id" element={<EventPage />} />
+        <Route path="/category/:categorySlug" element={<CategoryPage />} />
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/sanity-event/:slug" element={<SanityEventDetails />} /> 
+        <Route path="/sanity-event/:slug" element={<SanityEventDetails />} />
       </Routes>
-    </Router>
+    </>
   )
 }
 
 export default App
-
