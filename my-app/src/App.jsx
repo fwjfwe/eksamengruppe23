@@ -11,11 +11,11 @@ function App() {
     <Router>
       <Navbar />
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Home />} /> {/* må bytte denne */}
         <Route path="/event/:id" element={<EventPage />} /> 
         <Route path="/category/:categorySlug" element={<CategoryPage />} /> 
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/sanity-event/:slug" element={<SanityEventDetails />} /> 
+        <Route path="/sanity-event/:slug" element={<SanityEventDetails />} /> {/* må bytte denne */}
       </Routes>
     </Router>
   )
