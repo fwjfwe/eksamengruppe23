@@ -39,12 +39,16 @@
   
   .login-form button {
     width: 100%;
-    padding: 0.75rem;
-    background: #ccc;
+    padding: 0.5rem;
+    font-size: 1rem;
+    background-color: #4f46e5; /* optional: use a better color */
+    color: white;
     border: none;
-    cursor: not-allowed;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    margin-top: 1rem; /* aligns with spacing of inputs */
   }
-  
+
   section {
     margin-top: 30px; /* Space between dashboard section and above content */
   }
@@ -52,4 +56,8 @@
   input[type="email"],
   input[type="password"] {
     margin-top: 0.5rem; /* Reduced space between label and input */
+  }
+
+  * {
+    box-sizing: border-box;
   }
