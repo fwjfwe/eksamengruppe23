@@ -58,7 +58,6 @@ return (
             <button
               type="button"
               onClick={handleLogin}
-              disabled={!isFormValid} 
             >
               Login
             </button>
