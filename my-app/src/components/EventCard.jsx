@@ -26,6 +26,7 @@ export const EventGallery = ({ events }) => {
                             <figure>
                                 <img className="image" src={event.images[0].url} alt={event.name} />
                                 <h4>{event.name}</h4>
+                                <button>Les mer om {event.name}</button>
                             </figure>
                         )}
                     </article>
