@@ -4,6 +4,7 @@ import { Home } from "./components/Home";
 import Header from "./components/Header";
 import EventPage from "./components/EventPage";
 import CategoryPage from "./components/CategoryPage";
+import Dashboard from "./components/Dashboard";
 
 function App() {
   const [events, setEvents] = useState([]);
@@ -39,6 +40,7 @@ function App() {
       <Route path="/event/:id" element={<EventPage />} />
       <Route path="/category/:slug" element={<CategoryPage />} />
       <Route path="/Header" element={<Header />} />
+      <Route path="/Dashboard" element={<Dashboard />} />
     </Routes>
   );
 }
