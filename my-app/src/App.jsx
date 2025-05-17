@@ -10,16 +10,16 @@ function App() {
   const [events, setEvents] = useState([]);
 
   const getEvents = () => {
-    const ids = [
-      "Z698xZb_Z16v7eGkFy",
-      "Z698xZb_Z16vfkqIjU",
-      "Z698xZb_Z17q339",
-      "Z698xZb_Z17qfaA",
+    const attractionIds = [
+      "K8vZ917_YJf",
+      "K8vZ917K7fV",
+      "K8vZ917bJC7",
+      "K8vZ917oWOV",
     ];
-    
-    const idsString = ids.join(',');
 
-    fetch(`https://app.ticketmaster.com/discovery/v2/events?apikey=oUxracsATFhH1Gkva2GRyOTWWWR7uOgl&id=${idsString}&locale=*&countryCode=NO`)
+    const attractionIdParams = attractionIds.map(id => `attractionId=${id}`).join('&');
+
+    fetch(`https://app.ticketmaster.com/discovery/v2/events?apikey=oUxracsATFhH1Gkva2GRyOTWWWR7uOgl&${attractionIdParams}&locale=*&countryCode=NO`)
       .then((res) => res.json())
       .then((data) => {
         const allEvents = data._embedded?.events || [];
@@ -34,10 +34,11 @@ function App() {
     getEvents();
   }, []);
 
+
   return (
     <Routes>
       <Route path="/" element={<Home events={events} setEvents={setEvents} />} />
-      <Route path="/event/:id" element={<EventPage />} />
+      <Route path="/event/:attractionId" element={<EventPage events={events} />} />
       <Route path="/category/:slug" element={<CategoryPage />} />
       <Route path="/Header" element={<Header />} />
       <Route path="/Dashboard" element={<Dashboard />} />
