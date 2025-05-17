@@ -5,6 +5,7 @@ export default function Dashboard() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loggedIn, setLoggedin] = useState(false);
+  const [fact, setFact] = useState("");
 
 const randomInfo = [
   "Did you know? The longest time between two twins being born is 87 days!",
@@ -20,6 +21,7 @@ const getRandomInfo = () =>{
 
 const handleLogin = () => {
   if (email&&password) {
+    setFact(getRandomInfo());
     setLoggedin(true);
   } else {
     alert("Vennligst fyll ut feltene under");
@@ -66,7 +68,7 @@ return (
     ) : (
       <section className="min.side">
         <h2>Min Side</h2>
-        <p>{getRandomInfo}</p>
+        <p>{fact}</p>
       </section>
     )}
   </>
