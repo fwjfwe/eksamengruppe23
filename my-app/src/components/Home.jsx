@@ -1,5 +1,5 @@
 import Header from "./Header";
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import EventCard, { EventGallery } from './EventCard';
 
 export function Home({ events }) {
