@@ -1,164 +1,152 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import Header from "./Header";
+import AttractionCard from '../components/AttractionCard.jsx';
+import EventCard from '../components/EventCard.jsx';
+import { fetchCategoryContent } from '../api/categorypageapi.jsx';
 
-const CategoryPage = () => {
-  const SEGMENTS = {
-    music: 'KZFzniwnSyZfZ7v7nJ',
-    sports: 'KZFzniwnSyZfZ7v7nE',
-    theater: 'KnvZfZ7v7l1'
-  };
-
-  const COUNTRIES = {
-    NO: 'Norway',
-    SE: 'Sweden',
-    DK: 'Denmark'
-  };
-
-  const { slug } = useParams();
-  const [country, setCountry] = useState('NO');
-  const [data, setData] = useState({ events: [], attractions: [], venues: [] });
-  const [loading, setLoading] = useState(false);
-
-  const fetchData = () => {
-    setLoading(true);
-
-    fetch(
-      `https://app.ticketmaster.com/discovery/v2/suggest?apikey=oUxracsATFhH1Gkva2GRyOTWWWR7uOgl` +
-      `&locale=*&countryCode=${country}` +
-      `&segmentId=${SEGMENTS[slug]}`
-    )
-      .then(res => {
-        if (!res.ok) throw new Error(`Network response was not ok: ${res.status}`);
-        return res.json();
-      })
-      .then(json => {
-        console.log("Respons fra Ticketmaster:", json);
-
-        const venues = json._embedded?.venues || [];
-        const suggestedEvents = json._embedded?.events || [];
-
-        if (suggestedEvents.length === 0) {
-          // No events found, update state and finish
-          setData({ events: [], attractions: [], venues });
-          setLoading(false);
-          return;
-        }
-
-        // We fetch detailed event info for top 5 events sequentially
-        const detailedEvents = [];
-        const fetchNextEvent = (index) => {
-          if (index >= Math.min(5, suggestedEvents.length)) {
-            // After fetching all, update state
-            setData({ events: detailedEvents, attractions: [], venues });
-            setLoading(false);
-            return;
-          }
-
-          const event = suggestedEvents[index];
-          fetch(`https://app.ticketmaster.com/discovery/v2/events/${event.id}?apikey=oUxracsATFhH1Gkva2GRyOTWWWR7uOgl&locale=*`)
-            .then(res => {
-              if (!res.ok) throw new Error(`Failed to fetch event ${event.id}: ${res.status}`);
-              return res.json();
-            })
-            .then(detail => {
-              detailedEvents.push(detail);
-              fetchNextEvent(index + 1);
-            })
-            .catch(err => {
-              console.error(`Feil ved henting av event ${event.id}`, err);
-              // Continue even if one fetch fails
-              fetchNextEvent(index + 1);
-            });
-        };
-
-        fetchNextEvent(0);
-      })
-      .catch(error => {
-        console.error("Skjedde noe feil ved hovedfetch:", error);
-        setData({ events: [], attractions: [], venues: [] });
-        setLoading(false);
-      });
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, [slug, country]);
-
-  return (
-    <div style={{ padding: '1rem' }}>
-      <Header />
-      <h1>Filtrert søk</h1>
-
-      <label htmlFor="country-select">Velg land:</label>
-      <select
-        id="country-select"
-        value={country}
-        onChange={e => setCountry(e.target.value)}
-        style={{ display: 'block', marginBottom: '1rem' }}
-      >
-        {Object.entries(COUNTRIES).map(([code, name]) => (
-          <option key={code} value={code}>{name}</option>
-        ))}
-      </select>
-
-      <h2>Søk</h2>
-      <input
-        type="text"
-        placeholder="Søk her..."
-        style={{ width: '100%', padding: '0.5rem', marginBottom: '2rem' }}
-      />
-
-      {loading ? (
-        <p>Laster...</p>
-      ) : (
-        <>
-          {/* No attractions section since these IDs don't correspond to attractions */}
-          <section>
-            <h2>Arrangementer ({data.events.length})</h2>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-              {data.events.map(event => (
-                <div key={event.id} style={{ border: '1px solid #ccc', padding: '1rem', borderRadius: '8px' }}>
-                  <img
-                    src={event.images?.[0]?.url}
-                    alt={event.name}
-                    style={{ width: '100%', maxWidth: '300px', borderRadius: '8px' }}
-                  />
-                  <h3>{event.name}</h3>
-                  <p>
-                    Dato: {event.dates?.start?.localDate || 'Ukjent'}<br />
-                    Tid: {event.dates?.start?.localTime || 'Ukjent'}<br />
-                    Land: {event._embedded?.venues?.[0]?.country?.name || 'Ukjent'}<br />
-                    By: {event._embedded?.venues?.[0]?.city?.name || 'Ukjent'}<br />
-                    Sted: {event._embedded?.venues?.[0]?.name || 'Ukjent'}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          <section>
-            <h2>Spillesteder</h2>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
-              {data.venues
-                .filter(v => Array.isArray(v.images) && v.images.length > 0)
-                .slice(0, 5)
-                .map(venue => (
-                  <div key={venue.id} style={{ width: '150px', textAlign: 'center' }}>
-                    <img
-                      src={venue.images[0].url}
-                      alt={venue.name}
-                      style={{ width: '100%', height: 'auto', borderRadius: '8px' }}
-                    />
-                    <p>{venue.name}</p>
-                  </div>
-                ))}
-            </div>
-          </section>
-        </>
-      )}
-    </div>
-  );
+const slugToClassification = {
+  music: 'Music',
+  sports: 'Sports',
+  theater: 'Arts & Theatre'
 };
 
-export default CategoryPage;
+
+export default function CategoryPage() {
+  const { slug } = useParams();
+  const classificationName = slugToClassification[slug] || "";
+    console.log('[CategoryPage] URL slug is:', slug);
+
+
+  const [data, setData] = useState({ attractions: [], events: [], venues: [] });
+  const [filters, setFilters] = useState({
+    date: '',
+    countryCode: '',
+    city: '',
+    keyword: ''
+  });
+
+  useEffect(() => {
+  if (!classificationName) {
+    console.log('[CategoryPage] classificationName missing, skipping fetch');
+    return;
+  }
+
+  console.log('[CategoryPage] Fetching category content with filters:', {
+    ...filters,
+    classificationName,
+  });
+
+  fetchCategoryContent({ ...filters, classificationName })
+    .then(setData)
+    .catch((err) => console.error('[CategoryPage] Fetch error:', err));
+}, [filters, classificationName]);
+
+
+
+  const onFilter = (e) => {
+    e.preventDefault();
+    const f = e.target;
+    setFilters(fv => ({
+      ...fv,
+      date: f.date.value,
+      countryCode: f.country.value,
+      city: f.city.value
+    }));
+  };
+  const onSearch = (e) => {
+    e.preventDefault();
+    const f = e.target;
+    setFilters(fv => ({ ...fv, keyword: f.keyword.value }));
+  };
+
+  return (
+    <div className="container">
+      <h1>{slug.charAt(0).toUpperCase() + slug.slice(1)}</h1>
+
+      <section>
+        <h2>Filtrert søk</h2>
+        <form onSubmit={onFilter}>
+          <label>
+            Dato:
+            <input type="date" name="date" defaultValue={filters.date} />
+          </label>
+          <label>
+            Land:
+            <select name="country" defaultValue={filters.countryCode}>
+              <option value="">Velg et land</option>
+              <option value="NO">Norge</option>
+              <option value="SE">Sverige</option>
+              <option value="DE">Tyskland</option>
+              <option value="FR">Frankrike</option>
+            </select>
+          </label>
+          <label>
+            By:
+            <select name="city" defaultValue={filters.city}>
+              <option value="">Velg by</option>
+              <option value="Oslo">Oslo</option>
+              <option value="Stockholm">Stockholm</option>
+              <option value="Berlin">Berlin</option>
+              <option value="Paris">Paris</option>
+            </select>
+          </label>
+          <button type="submit">Filtrer</button>
+        </form>
+      </section>
+
+      <section>
+        <h2>Søk</h2>
+        <form onSubmit={onSearch}>
+          <input
+            type="text"
+            name="keyword"
+            placeholder="Søk etter event, attraksjon eller spillested"
+            defaultValue={filters.keyword}
+          />
+          <button type="submit">Søk</button>
+        </form>
+      </section>
+
+      {/* Resultater */}
+      <section>
+        <h2>Attraksjoner</h2>
+        <div className="attractions-grid">
+          {data.attractions.map(a => (
+            <AttractionCard key={a.id} item={a} />
+          ))}
+        </div>
+      </section>
+
+      <section>
+        <h2>Arrangementer</h2>
+        <div className="event-grid">
+          {data.events.map(e => (
+            <EventCard key={e.id} event={e} />
+          ))}
+        </div>
+      </section>
+
+      <section>
+        <h2>Venues</h2>
+        <div className="venues-grid">
+          {data.venues.map(v => (
+            <div key={v.id} className="venue-card">
+              {v.images && v.images.length > 0 && (
+                <img 
+                  src={v.images[0].url} 
+                  alt={v.name} 
+                  style={{ width: '200px', height: 'auto', borderRadius: '8px' }}
+                />
+              )}
+              <h3>{v.name}</h3>
+              <p>{v.address?.line1 || ''}</p>
+              <p>{v.city?.name || ''}, {v.country?.name || ''}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+
+    </div>
+  );
+}
