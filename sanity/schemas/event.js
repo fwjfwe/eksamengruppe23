@@ -1,28 +1,26 @@
 export default {
-    name: 'event',
-    title: 'Event',
-    type: 'document',
-    fields: [
-      {
-        name: 'title',
-        title: 'Tittel',
-        type: 'string',
-      },
-      {
-        name: 'description',
-        title: 'Beskrivelse',
-        type: 'text',
-      },
-      {
-        name: 'date',
-        title: 'Dato',
-        type: 'datetime',
-      },
-      {
-        name: 'location',
-        title: 'Sted',
-        type: 'string',
-      },
-    ],
-}
-  
+  name: 'event',
+  type: 'document',
+  title: 'Event',
+  fields: [
+    {
+      name: 'title',
+      type: 'string',
+      title: 'Tittel på arrangementet',
+    },
+    {
+      name: 'apiId',
+      type: 'string',
+      title: 'API ID',
+      description: 'ID hentet fra Ticketmaster sitt API',
+    },
+    {
+      name: 'category',
+      type: 'string',
+      title: 'Kategori',
+      options: {
+        list: ['Sport', 'Show', 'Festival'],
+      }
+    }
+  ],
+};
