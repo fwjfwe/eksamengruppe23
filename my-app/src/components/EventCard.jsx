@@ -1,61 +1,70 @@
 import { Link } from "react-router-dom";
 
 const EventCard = ({ event }) => {
-    const imageUrl = event.images?.[0]?.url;
-    const name = event.name;
-    const city = event._embedded?.venues?.[0]?.city?.name || "Ukjent by";
-    const country = event._embedded?.venues?.[0]?.country?.name || "Ukjent land";
-    const date = event.dates?.start?.localDate || "Ukjent dato";
+  if (!event) return <div className="event-card">No event data</div>;
 
-    return (
-        <article className="event-card">
-            {imageUrl && <img src={imageUrl} alt={name} />}
-            <h4>{name}</h4>
-            <p>{city}, {country}</p>
-            <p>Dato: {date}</p>
-        </article>
-    );
+  const imageUrl = event.images?.[0]?.url || 'https://via.placeholder.com/300';
+  const name = event.name || 'Ukjent navn';
+  const city = event._embedded?.venues?.[0]?.city?.name || "Ukjent by";
+  const country = event._embedded?.venues?.[0]?.country?.name || "Ukjent land";
+  const date = event.dates?.start?.localDate || "Ukjent dato";
+  const attractionId = event._embedded?.attractions?.[0]?.id || event.id;
+
+  return (
+    <article className="event-card">
+      <img src={imageUrl} alt={name} />
+      <div className="event-info">
+        <h4>{name}</h4>
+        <p>{city}, {country}</p>
+        <p>Dato: {date}</p>
+        <Link to={`/event/${attractionId}`}>
+          <button>Les mer</button>
+        </Link>
+      </div>
+    </article>
+  );
 };
 
-export const EventGallery = ({ events }) => {
-    const uniqueEventsMap = new Map();
+export const EventGallery = ({ events = [] }) => {
+  const uniqueEventsMap = new Map();
 
-    events.forEach(event => {
-        const attractionName = event._embedded?.attractions?.[0]?.name;
-        if (attractionName && !uniqueEventsMap.has(attractionName)) {
-            uniqueEventsMap.set(attractionName, event);
-        }
-    });
+  events.forEach(event => {
+    const attractionName = event._embedded?.attractions?.[0]?.name || event.name;
+    if (attractionName && !uniqueEventsMap.has(attractionName)) {
+      uniqueEventsMap.set(attractionName, event);
+    }
+  });
 
-    const uniqueEvents = Array.from(uniqueEventsMap.values());
+  const uniqueEvents = Array.from(uniqueEventsMap.values());
 
-    return (
-        <>
-            <h1>Sommerens festivaler!</h1>
-            <section className="image-container">
-                {uniqueEvents.map((event) => {
-                    const attractionId = event._embedded?.attractions?.[0]?.id; 
+  if (uniqueEvents.length === 0) {
+    return <p>Ingen arrangementer å vise</p>;
+  }
 
-                    return (
-                        <article key={event.id}>
-                            {event.images?.[0]?.url && (
-                                <figure>
-                                    <img className="image" src={event.images[0].url} alt={event.name} />
-                                    <h4>{event.name}</h4>
-                                    <Link to={`/event/${attractionId}`}>
-                                        <button>Les mer om {event.name}</button>
-                                    </Link>
-                                </figure>
-                            )}
-                        </article>
-                    );
-                })}
-            </section>
-        </>
-    );
+  return (
+    <>
+      <h1>Sommerens festivaler!</h1>
+      <section className="image-container">
+        {uniqueEvents.map((event) => {
+          const attractionId = event._embedded?.attractions?.[0]?.id || event.id;
+          const imageUrl = event.images?.[0]?.url || 'https://via.placeholder.com/300';
+          const name = event.name || 'Ukjent navn';
+
+          return (
+            <article key={event.id}>
+              <figure>
+                <img className="image" src={imageUrl} alt={name} />
+                <h4>{name}</h4>
+                <Link to={`/event/${attractionId}`}>
+                  <button>Les mer om {name}</button>
+                </Link>
+              </figure>
+            </article>
+          );
+        })}
+      </section>
+    </>
+  );
 };
-
-
-
 
 export default EventCard;
