@@ -5,7 +5,9 @@ export default function Header() {
   return (
     <header>
       <Link to="/">Billetlyst</Link>
-      <Link to="/category/musikk">Musikk Sport Teater/Show</Link>
+      <Link to="/category/music">Musikk</Link>
+      <Link to="/category/sports">Sport</Link>
+      <Link to="/category/theater">Teater</Link>
       <Link to="/dashboard">Logg inn</Link>
     </header>
   );
