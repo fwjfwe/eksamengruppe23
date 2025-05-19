@@ -141,32 +141,31 @@ export default function CategoryPage() {
       </div>
     </section>
 
-      <section>
-        <h2>Venues</h2>
-        <div className="venues-grid">
-          {data.venues.map(v => (
-            <div key={v.id} className="venue-card">
-              {v.images && v.images.length > 0 && (
-                <img
-                  src={v.images[0].url}
-                  alt={v.name}
-                />
-              )}
-              <h3>{v.name}</h3>
-              <p>{v.address?.line1 || ''}</p>
-              <p>{v.city?.name || ''}, {v.country?.name || ''}</p>
-            </div>
-          ))}
-          {data.attractions.map(a => (
+    <section>
+      <h2>Venues</h2>
+      <div className="venue-container">
+        {data.venues.map(v => (
+          <div className="venue-card" key={`venue-${v.id}`}>
             <AttractionCard
-              key={`venue-attraction-${a.id}`}
+              item={v}
+              onSave={handleSave}
+              isSaved={savedAttractions.includes(v.id)}
+            />
+          </div>
+        ))}
+        {data.attractions.map(a => (
+          <div className="venue-card" key={`venue-attraction-${a.id}`}>
+            <AttractionCard
               item={a}
               onSave={handleSave}
               isSaved={savedAttractions.includes(a.id)}
             />
-          ))}
-        </div>
-      </section>
+          </div>
+        ))}
+      </div>
+    </section>
+
+
 
     </div>
   );
