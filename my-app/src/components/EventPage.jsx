@@ -1,5 +1,4 @@
 import { useParams } from "react-router-dom";
-import Header from "./Header";
 import EventCard from "./EventCard";
 import ArtistCard from "./ArtistCard"; 
 import "../styles/eventpage.css";
@@ -14,7 +13,6 @@ export default function EventPage({ events }) {
   if (filteredEvents.length === 0) {
     return (
       <>
-        <Header />
         <main>
           <p>Fant ingen arrangementer for denne festivalen.</p>
         </main>
@@ -41,7 +39,6 @@ export default function EventPage({ events }) {
 
   return (
     <>
-      <Header />
       <main>
         <h1>{festivalName}</h1>
         <h2>Sjanger:</h2>
@@ -55,7 +52,7 @@ export default function EventPage({ events }) {
         <section className="image-container">
           {filteredEvents.map(event => (
             <div key={event.id} className="event-wrapper">
-              <EventCard event={event} />
+              <EventCard event={event} hideButton />
               <div className="button-row">
                 <button>Kjøp</button>
                 <button>Legg til i ønskeliste</button>

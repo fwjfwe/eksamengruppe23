@@ -5,7 +5,8 @@ import Header from "./components/Header";
 import EventPage from "./components/EventPage";
 import CategoryPage from "./components/CategoryPage";
 import Dashboard from "./components/Dashboard";
-import Sanity from "./components/SanityEventDetails";
+
+
 
 function App() {
   const [events, setEvents] = useState([]);

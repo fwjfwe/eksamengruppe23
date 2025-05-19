@@ -77,7 +77,6 @@ export default function CategoryPage() {
               <option value="NO">Norge</option>
               <option value="SE">Sverige</option>
               <option value="DE">Tyskland</option>
-              <option value="FR">Frankrike</option>
             </select>
           </label>
           <label>
@@ -87,7 +86,6 @@ export default function CategoryPage() {
               <option value="Oslo">Oslo</option>
               <option value="Stockholm">Stockholm</option>
               <option value="Berlin">Berlin</option>
-              <option value="Paris">Paris</option>
             </select>
           </label>
           <button type="submit">Filtrer</button>
@@ -110,7 +108,7 @@ export default function CategoryPage() {
       {/* Resultater */}
       <section>
         <h2>Attraksjoner</h2>
-        <div className="attractions-grid">
+        <div className="image-container">
           {data.attractions.map(a => (
             <AttractionCard key={a.id} item={a} />
           ))}
@@ -119,7 +117,7 @@ export default function CategoryPage() {
 
       <section>
         <h2>Arrangementer</h2>
-        <div className="event-grid">
+        <div className="image-container">
           {data.events.map(e => (
             <EventCard key={e.id} event={e} />
           ))}
@@ -135,7 +133,6 @@ export default function CategoryPage() {
                 <img 
                   src={v.images[0].url} 
                   alt={v.name} 
-                  style={{ width: '200px', height: 'auto', borderRadius: '8px' }}
                 />
               )}
               <h3>{v.name}</h3>
