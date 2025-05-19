@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import EventCard from './EventCard';
 
 export function Home({ events }) {
-  // Filter unike events
   const uniqueEventsMap = new Map();
 
   events.forEach(event => {
@@ -23,7 +22,6 @@ export function Home({ events }) {
       ) : (
         <section className="image-container">
           {uniqueEvents.map(event => (
-            // Her sender vi en prop for å si at vi vil skjule by og dato i EventCard
             <EventCard key={event.id} event={event} hideDetails={true} />
           ))}
         </section>

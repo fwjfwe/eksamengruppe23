@@ -10,12 +10,10 @@ const slugToClassification = {
   theater: 'Arts & Theatre'
 };
 
-
 export default function CategoryPage() {
   const { slug } = useParams();
   const classificationName = slugToClassification[slug] || "";
-    console.log('[CategoryPage] URL slug is:', slug);
-
+  console.log('[CategoryPage] URL slug is:', slug);
 
   const [data, setData] = useState({ attractions: [], events: [], venues: [] });
   const [filters, setFilters] = useState({
@@ -25,23 +23,32 @@ export default function CategoryPage() {
     keyword: ''
   });
 
+  // ✅ Hook moved inside the component
+  const [savedAttractions, setSavedAttractions] = useState([]);
+
+  const handleSave = (id) => {
+    setSavedAttractions(prev =>
+      prev.includes(id)
+        ? prev.filter(savedId => savedId !== id)
+        : [...prev, id]
+    );
+  };
+
   useEffect(() => {
-  if (!classificationName) {
-    console.log('[CategoryPage] classificationName missing, skipping fetch');
-    return;
-  }
+    if (!classificationName) {
+      console.log('[CategoryPage] classificationName missing, skipping fetch');
+      return;
+    }
 
-  console.log('[CategoryPage] Fetching category content with filters:', {
-    ...filters,
-    classificationName,
-  });
+    console.log('[CategoryPage] Fetching category content with filters:', {
+      ...filters,
+      classificationName,
+    });
 
-  fetchCategoryContent({ ...filters, classificationName })
-    .then(setData)
-    .catch((err) => console.error('[CategoryPage] Fetch error:', err));
-}, [filters, classificationName]);
-
-
+    fetchCategoryContent({ ...filters, classificationName })
+      .then(setData)
+      .catch((err) => console.error('[CategoryPage] Fetch error:', err));
+  }, [filters, classificationName]);
 
   const onFilter = (e) => {
     e.preventDefault();
@@ -53,6 +60,7 @@ export default function CategoryPage() {
       city: f.city.value
     }));
   };
+
   const onSearch = (e) => {
     e.preventDefault();
     const f = e.target;
@@ -105,24 +113,33 @@ export default function CategoryPage() {
         </form>
       </section>
 
-      {/* Resultater */}
       <section>
         <h2>Attraksjoner</h2>
         <div className="image-container">
           {data.attractions.map(a => (
-            <AttractionCard key={a.id} item={a} />
+            <AttractionCard
+              key={a.id}
+              item={a}
+              onSave={handleSave}
+              isSaved={savedAttractions.includes(a.id)}
+            />
           ))}
         </div>
       </section>
 
-      <section>
-        <h2>Arrangementer</h2>
-        <div className="image-container">
-          {data.events.map(e => (
-            <EventCard key={e.id} event={e} />
-          ))}
-        </div>
-      </section>
+    <section>
+      <h2>Arrangementer</h2>
+      <div className="image-container">
+        {data.attractions.map(a => (
+          <AttractionCard
+            key={`event-attraction-${a.id}`}
+            item={a}
+            onSave={handleSave}
+            isSaved={savedAttractions.includes(a.id)}
+          />
+        ))}
+      </div>
+    </section>
 
       <section>
         <h2>Venues</h2>
@@ -130,9 +147,9 @@ export default function CategoryPage() {
           {data.venues.map(v => (
             <div key={v.id} className="venue-card">
               {v.images && v.images.length > 0 && (
-                <img 
-                  src={v.images[0].url} 
-                  alt={v.name} 
+                <img
+                  src={v.images[0].url}
+                  alt={v.name}
                 />
               )}
               <h3>{v.name}</h3>
@@ -140,9 +157,16 @@ export default function CategoryPage() {
               <p>{v.city?.name || ''}, {v.country?.name || ''}</p>
             </div>
           ))}
+          {data.attractions.map(a => (
+            <AttractionCard
+              key={`venue-attraction-${a.id}`}
+              item={a}
+              onSave={handleSave}
+              isSaved={savedAttractions.includes(a.id)}
+            />
+          ))}
         </div>
       </section>
-
 
     </div>
   );
