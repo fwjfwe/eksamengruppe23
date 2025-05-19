@@ -98,12 +98,12 @@ button {
 }
 
 .venue-card img {
-    width: 200px;      /* match your inline width */
-    height: 150px;     /* slightly smaller height, or adjust as needed */
-    object-fit: cover; /* maintain aspect ratio, crop if needed */
+    width: 200px;     
+    height: 150px;    
+    object-fit: cover; 
     border-radius: 8px;
     display: block;
-    margin: 0 auto 10px auto; /* center image and add bottom margin */
+    margin: 0 auto 10px auto; 
 }
 
 .venue-card h3 {
@@ -174,21 +174,20 @@ footer {
 
     .image-container {
         width: 100%;
-        max-width: 100vw; /* full viewport width */
-        padding: 0 1rem;   /* optional horizontal padding */
+        max-width: 100vw; 
+        padding: 0 1rem;   
         box-sizing: border-box;
         display: flex;
         flex-wrap: wrap;
-        justify-content: center; /* center images */
-        gap: 0.5rem; /* space between images */
-        overflow-x: hidden; /* prevent horizontal scroll */
+        justify-content: center; 
+        gap: 0.5rem; 
+        overflow-x: hidden; 
     }
 
-    /* Make images inside image-container responsive */
     .image-container img {
         max-width: 100%;
         height: auto;
-        flex: 1 1 150px; /* images shrink/grow but min 150px */
+        flex: 1 1 150px; 
         object-fit: cover;
         border-radius: 4px;
     }
