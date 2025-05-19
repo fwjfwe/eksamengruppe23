@@ -4,8 +4,9 @@ body{
 
 header {
     display: flex;
-    justify-content: center; 
-    gap: 20rem;
+    justify-content: space-between; 
+    align-items: center;
+    padding: 1rem 2rem;
 }
 
 header a {
@@ -82,3 +83,38 @@ button {
   border-radius: 8px;
 }
 
+.venues-grid {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.venue-card {
+    /* Optional: set a fixed size or max width to keep cards consistent */
+    width: 220px; /* slightly wider than image to allow padding/text */
+    box-sizing: border-box;
+    text-align: center;
+    font-family: Arial, sans-serif;
+}
+
+.venue-card img {
+    width: 200px;      /* match your inline width */
+    height: 150px;     /* slightly smaller height, or adjust as needed */
+    object-fit: cover; /* maintain aspect ratio, crop if needed */
+    border-radius: 8px;
+    display: block;
+    margin: 0 auto 10px auto; /* center image and add bottom margin */
+}
+
+.venue-card h3 {
+    margin: 0.5rem 0 0.25rem;
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.venue-card p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #555;
+}
