@@ -91,8 +91,7 @@ button {
 }
 
 .venue-card {
-    /* Optional: set a fixed size or max width to keep cards consistent */
-    width: 220px; /* slightly wider than image to allow padding/text */
+    width: 220px; 
     box-sizing: border-box;
     text-align: center;
     font-family: Arial, sans-serif;
@@ -117,4 +116,51 @@ button {
     margin: 0;
     font-size: 0.9rem;
     color: #555;
+}
+
+.venue-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.venue-card {
+  width: 200px;
+  text-align: center;
+}
+
+.venue-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+@media (max-width: 600px) {
+    header {
+        flex-direction: column;
+        align-items: center;
+        padding: 1rem;
+    }
+
+    header a {
+        padding-top: 1rem;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+        padding-top: 1rem;
+    }
+
+    button {
+        width: 100%;
+        max-width: 300px;
+    }
+
+    .button-container {
+        flex-direction: column;
+        align-items: center;
+    }
 }

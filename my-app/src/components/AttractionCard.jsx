@@ -6,7 +6,7 @@ export default function AttractionCard({ item, isSaved, onSave }) {
   const imageUrl = item.images?.[0]?.url || '/placeholder.png';
 
   return (
-    <div className="attraction-card">
+    <div>
       <img src={imageUrl} alt={item.name} className="image" />
       <h3 className="title">{item.name}</h3>
       {item.info && <p className="description">{item.info}</p>}
