@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import "../styles/dash.css";
-import Header from "./Header";
+
 
 export default function Dashboard() {
   const [email, setEmail] = useState("");
@@ -19,7 +19,6 @@ const isFormValid = email&&password;
 
 return (
   <>
-  <Header />
     {!loggedIn ? (
       <section className="login-container">
         <form className="login-form">

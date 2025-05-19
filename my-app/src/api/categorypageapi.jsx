@@ -59,3 +59,4 @@ export async function fetchCategoryContent(filters) {
     return { events: [], attractions: [], venues: [] };
   }
 }
+

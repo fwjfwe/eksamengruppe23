@@ -21,6 +21,13 @@ export default {
       options: {
         list: ['Sport', 'Show', 'Festival'],
       }
+    },
+    {
+       name: 'user',
+      type: 'reference',
+      to: [{ type: 'user' }],
+      title: 'Bruker',
+      description: 'Knytt dette arrangementet til en bruker',
     }
   ],
 };
