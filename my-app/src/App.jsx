@@ -41,7 +41,7 @@ function App() {
   };
 
   useEffect(() => {
-    getEvents(); // Only runs once on mount
+    getEvents(); 
   }, []);
 
   return (
