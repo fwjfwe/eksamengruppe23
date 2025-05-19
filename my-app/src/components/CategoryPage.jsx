@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import AttractionCard from '../components/AttractionCard.jsx';
-import EventCard from '../components/EventCard.jsx';
 import { fetchCategoryContent } from '../api/categorypageapi.jsx';
 
 const slugToClassification = {
@@ -23,7 +22,6 @@ export default function CategoryPage() {
     keyword: ''
   });
 
-  // ✅ Hook moved inside the component
   const [savedAttractions, setSavedAttractions] = useState([]);
 
   const handleSave = (id) => {
