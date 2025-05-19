@@ -16,7 +16,6 @@ const EventCard = ({ event, hideDetails = false, hideButton = false }) => {
       <div className="event-info">
         <h4>{name}</h4>
 
-        {/* Vis by og dato kun om hideDetails ikke er true */}
         {!hideDetails && (
           <>
             <p>{city}, {country}</p>
@@ -24,7 +23,6 @@ const EventCard = ({ event, hideDetails = false, hideButton = false }) => {
           </>
         )}
 
-        {/* Vis knapp kun om hideButton ikke er true */}
         {!hideButton && (
           <Link to={`/event/${attractionId}`}>
             <button>Les mer om {name}</button>
