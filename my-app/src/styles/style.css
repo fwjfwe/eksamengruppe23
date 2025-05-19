@@ -138,6 +138,13 @@ button {
   border-radius: 8px;
 }
 
+footer { 
+    text-align: 'center';
+    padding: '1rem';
+    font-size: '0.9rem';
+    color: '#555' 
+}
+
 @media (max-width: 600px) {
     header {
         flex-direction: column;
@@ -162,5 +169,28 @@ button {
     .button-container {
         flex-direction: column;
         align-items: center;
+        margin-left: 3rem;
+    }
+
+    .image-container {
+        width: 100%;
+        max-width: 100vw; /* full viewport width */
+        padding: 0 1rem;   /* optional horizontal padding */
+        box-sizing: border-box;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center; /* center images */
+        gap: 0.5rem; /* space between images */
+        overflow-x: hidden; /* prevent horizontal scroll */
+    }
+
+    /* Make images inside image-container responsive */
+    .image-container img {
+        max-width: 100%;
+        height: auto;
+        flex: 1 1 150px; /* images shrink/grow but min 150px */
+        object-fit: cover;
+        border-radius: 4px;
     }
 }
+

@@ -5,6 +5,7 @@ import Header from "./components/Header";
 import EventPage from "./components/EventPage";
 import CategoryPage from "./components/CategoryPage";
 import Dashboard from "./components/Dashboard";
+import Footer from './components/footer';
 
 
 
@@ -53,6 +54,7 @@ function App() {
         <Route path="/category/:slug" element={<CategoryPage />} />
         <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
+      <Footer />
     </>
 
   );
