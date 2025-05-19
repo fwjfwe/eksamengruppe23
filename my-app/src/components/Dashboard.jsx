@@ -1,6 +1,5 @@
 import React, {useState} from "react";
 import "../styles/dash.css";
-import Header from "./Header";
 
 
 export default function Dashboard() {
